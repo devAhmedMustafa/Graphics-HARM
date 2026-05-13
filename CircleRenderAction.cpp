@@ -31,28 +31,29 @@ void CircleRenderAction::onMouseClick(Input::MouseInput mi)
 	bool isModifiedMidPoint = msg == "Algo:ModifiedMidpoint";
 
 	auto radius = center->distance(*radiusPoint);
+	auto color = RenderPipeline::getInstance()->getDrawingColor();
 	std::unique_ptr<ShapeRenderer> shape = nullptr;
 
 	auto handler = WindowHandler::getInstance();
     if (isDirect) {
 		logger << "Drawing circle using Direct Algorithm\n";
-		shape = std::make_unique<DirectCircleRenderer>(center.value(), radius, RenderPipeline::getInstance()->getDrawingColor());
+		shape = std::make_unique<DirectCircleRenderer>(center.value(), radius, color);
     }
     else if (isPolar) {
 		logger << "Drawing circle using Polar Algorithm\n";
-		shape = std::make_unique<PolarCircleRenderer>(RenderPipeline::getInstance()->getDrawingColor(), center.value(), radius);
+		shape = std::make_unique<PolarCircleRenderer>(color, center.value(), radius);
     }
     else if (isIterPolar) {
 		logger << "Drawing circle using Iterative Polar Algorithm\n";
-		shape = std::make_unique<IterPolarCircleRenderer>(RenderPipeline::getInstance()->getDrawingColor(), center.value(), radius);
+		shape = std::make_unique<IterPolarCircleRenderer>(color, center.value(), radius);
     }
     else if (isMidPoint) {
         logger << "Drawing circle using Midpoint Algorithm\n";
-        shape = std::make_unique<MidPointCircleRenderer>(RenderPipeline::getInstance()->getDrawingColor(), center.value(), radius);
+        shape = std::make_unique<MidPointCircleRenderer>(color, center.value(), radius);
     }
     else if (isModifiedMidPoint) {
         logger << "Drawing circle using Modified Midpoint Algorithm\n";
-        shape = std::make_unique<ModMidCircleRenderer>(RenderPipeline::getInstance()->getDrawingColor(), center.value(), radius);
+        shape = std::make_unique<ModMidCircleRenderer>(color, center.value(), radius);
 	}
     else {
         logger << "Unsupported circle algorithm: " << msg << "\n";

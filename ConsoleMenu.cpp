@@ -30,6 +30,26 @@ void ConsoleMenu::LinesMenu() {
 		<< "2) Midpoint\n"
 		<< "3) Parametric\n"
 		;
+
+	int action;
+	std::cin >> action;
+
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+	switch (action)
+	{
+	case 1:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawLine, "Algo:DDA"));
+		break;
+	case 2:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawLine, "Algo:Midpoint"));
+		break;
+	case 3:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawLine, "Algo:Parametric"));
+		break;
+	default:
+		std::cout << "Not implemented yet\n";
+		break;
+	}
 }
 
 void ConsoleMenu::CirclesMenu() {

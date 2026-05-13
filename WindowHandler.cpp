@@ -1,6 +1,7 @@
 #include "WindowHandler.h"
 #include "RenderPipeline.h"
 #include "Input.h"
+#include "LineRenderAction.h"
 #include "CircleRenderAction.h"
 #include "ShapeStore.h"
 
@@ -49,8 +50,6 @@ LRESULT WINAPI WindowHandler::WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM l
 
         auto shapes = ShapeStore::getShapes();
 
-		handler->logger << "Redrawing window with " << shapes.size() << " shapes\n";
-
         for (auto& shape : shapes) {
             shape->draw(hdc);
         }
@@ -75,6 +74,9 @@ LRESULT WINAPI WindowHandler::WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM l
             switch (command->mode)
             {
             case RenderMode::ClearScreen:
+                break;
+            case RenderMode::DrawLine:
+				handler->currentAction = new LineRenderAction(command.value());
                 break;
             case RenderMode::DrawCircle:
                 handler->currentAction = new CircleRenderAction(command.value());

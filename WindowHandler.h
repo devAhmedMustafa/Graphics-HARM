@@ -3,6 +3,7 @@
 #include <windowsx.h>
 #include "Logger.h"
 #include "RenderAction.h"
+#include "CircleAlgorithms.h"
 
 class WindowHandler
 {

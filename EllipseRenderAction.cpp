@@ -60,4 +60,6 @@ void EllipseRenderAction::onMouseClick(Input::MouseInput mi)
 	else {
 		logger << "Failed to create shape renderer\n";
 	}
+
+	isDone = true;
 }

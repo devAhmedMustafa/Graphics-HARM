@@ -49,6 +49,18 @@ void ConsoleMenu::CirclesMenu() {
 	case 1:
 		m_Context.pushToChannel(RenderCommand(RenderMode::DrawCircle, "Algo:Direct"));
 		break;
+	case 2:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawCircle, "Algo:Polar"));
+		break;
+	case 3:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawCircle, "Algo:IterativePolar"));
+		break;
+	case 4:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawCircle, "Algo:Midpoint"));
+		break;
+	case 5:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawCircle, "Algo:ModifiedMidpoint"));
+		break;
 	default:
 		std::cout << "Not implemented yet\n";
 		break;

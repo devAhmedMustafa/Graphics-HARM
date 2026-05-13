@@ -128,7 +128,9 @@
     <ClCompile Include="CircleAlgorithms.cpp" />
     <ClCompile Include="CircleRenderAction.cpp" />
     <ClCompile Include="ConsoleMenu.cpp" />
+    <ClCompile Include="ElipseAlgorithms.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="LineAlgorithms.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderPipeline.cpp" />
@@ -141,7 +143,13 @@
     <ClInclude Include="CircleRenderAction.h" />
     <ClInclude Include="ConsoleMenu.h" />
     <ClInclude Include="DirectCircleRenderer.h" />
+    <ClInclude Include="ElipseAlgorithms.h" />
+    <ClInclude Include="IterPolarCircleRenderer.h" />
+    <ClInclude Include="LineAlgorithms.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="MidPointCircleRenderer.h" />
+    <ClInclude Include="ModMidCircleRenderer.h" />
+    <ClInclude Include="PolarCircleRenderer.h" />
     <ClInclude Include="ShapeRenderer.h" />
     <ClInclude Include="ShapeStore.h" />
     <ClInclude Include="UtilTypes.h" />

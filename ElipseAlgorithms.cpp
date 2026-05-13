@@ -34,7 +34,7 @@ void DirectEllipse(HDC hdc, int xc, int yc, int A, int B, COLORREF color)
 // Polar Ellipse Algorithm
 void PolarEllipse(HDC hdc, int xc, int yc, int A, int B, COLORREF color)
 {
-    double dtheta = 1.0 / std::max(A, B);
+    double dtheta = 1.0 / max(A, B);
 
     for (double theta = 0; theta <= 1.5708; theta += dtheta)
     {

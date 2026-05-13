@@ -1,62 +1,36 @@
 #pragma once
 #include <Windows.h>
-#include "RenderPipeline.h"
+#include <windowsx.h>
+#include "Logger.h"
 #include "RenderAction.h"
 
-LRESULT WINAPI WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM lp)
+class WindowHandler
 {
-    switch (mcode)
-    {
-    case WM_CLOSE:
-        DestroyWindow(hwnd);
-        return 0;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        return 0;
+
+public:
+
+    static WindowHandler* getInstance() {
+        if (instance == nullptr) {
+			throw std::runtime_error("WindowHandler instance not initialized. Call SetupWindow first.");
+        }
+        return instance;
     }
 
-    // Render pipeline gets all remaining messages
-
-    auto renderPipeline = RenderPipeline::getInstance();
-
-    auto command = renderPipeline->getRenderCommand();
-    if (!command.has_value())
-        return DefWindowProc(hwnd, mcode, wp, lp);
-
-    RenderAction* action = nullptr;
-    switch (command->mode)
-    {
-    case RenderMode::ClearScreen:
-        break;
-    default:
-        break;
+    WindowHandler() {
+		instance = this;
     }
 
-    if (!action)
-        return DefWindowProc(hwnd, mcode, wp, lp);
+    HWND SetupWindow(HINSTANCE instance, int nsh);
 
-    return action->draw(hwnd, mcode, wp, lp);
-}
+    HWND getHWND() const {
+        return hwnd;
+    }
 
-HWND SetupWindow(HINSTANCE instance, int nsh) {
-	WNDCLASS wc;
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hIcon = LoadIcon(NULL, IDI_WINLOGO);
-	wc.hInstance = instance;
-	wc.lpfnWndProc = WndProc;
-	wc.lpszClassName = L"renderer";
-	wc.lpszMenuName = NULL;
-	wc.style = CS_HREDRAW | CS_VREDRAW;
+private:
+    static WindowHandler* instance;
+    Logger logger;
+    HWND hwnd;
+    RenderAction* currentAction = nullptr;
 
-	RegisterClass(&wc);
-
-	HWND hwnd = CreateWindow(L"renderer", L"Graphics Engine", WS_OVERLAPPEDWINDOW, 0, 0, 800, 600, NULL, NULL, instance, 0);
-
-	ShowWindow(hwnd, nsh);
-	UpdateWindow(hwnd);
-
-	return hwnd;
-}
+    static LRESULT WINAPI WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM lp);
+};

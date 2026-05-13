@@ -8,13 +8,19 @@
 #include "ConsoleMenu.h"
 #include "RenderPipeline.h"
 
+#include "Logger.h"
+
 int main(int argc, char* argv[])
 {
+	Logger logger;
+	logger << "Starting application...\n";
+
 	HINSTANCE h = GetModuleHandle(NULL);
 	int nsh = SW_SHOW;
 	AppContext app;
 	ConsoleMenu menu(app);
 	RenderPipeline rePipe(app);
+	WindowHandler wh;
 
 	AllocConsole();
 
@@ -22,21 +28,19 @@ int main(int argc, char* argv[])
 	freopen_s(&fp, "CONOUT$", "w", stdout);
 	freopen_s(&fp, "CONIN$", "r", stdin);
 
-	HWND hwnd = SetupWindow(h, nsh);
+	HWND hwnd = wh.SetupWindow(h, nsh);
 
 	MSG msg;
 
-	app.running = true;
-
 	std::thread consoleThread([&menu]() {menu.run(); });
 
-	while (app.running)
+	while (app.isRunning())
 	{
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT)
 			{
-				app.running = false;
+				app.stop();
 			}
 
 			TranslateMessage(&msg);

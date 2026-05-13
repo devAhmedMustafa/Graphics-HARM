@@ -4,6 +4,7 @@
 #include <memory>
 #include <optional>
 #include <stdexcept>
+#include "Windows.h"
 
 #include "RenderCommand.h"
 
@@ -36,8 +37,18 @@ public:
 
 	std::optional<RenderCommand> getRenderCommand() const;
 
+	COLORREF getDrawingColor() const {
+		return drawingColor;
+	}
+
+	void setDrawingColor(COLORREF color) {
+		drawingColor = color;
+	}
+
 private:
 	static RenderPipeline* m_Instance;
 	AppContext& m_Context;
 	std::optional<RenderCommand> heldCommand;
+
+	COLORREF drawingColor = RGB(200, 0, 0);
 };

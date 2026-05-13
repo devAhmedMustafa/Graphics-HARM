@@ -12,4 +12,13 @@ public:
 private:
 	AppContext& m_Context;
 
+	void FileMenu();
+	void PreferencesMenu();
+	void LinesMenu();
+	void CirclesMenu();
+	void EllipseMenu();
+	void CurvesMenu();
+	void FillingMenu();
+	void ClippingMenu();
+
 };

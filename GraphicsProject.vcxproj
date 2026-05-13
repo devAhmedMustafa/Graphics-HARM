@@ -125,13 +125,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CircleAlgorithms.cpp" />
+    <ClCompile Include="CircleRenderAction.cpp" />
     <ClCompile Include="ConsoleMenu.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderPipeline.cpp" />
+    <ClCompile Include="ShapeStore.cpp" />
+    <ClCompile Include="WindowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppContext.h" />
+    <ClInclude Include="CircleAlgorithms.h" />
+    <ClInclude Include="CircleRenderAction.h" />
     <ClInclude Include="ConsoleMenu.h" />
+    <ClInclude Include="DirectCircleRenderer.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="ShapeRenderer.h" />
+    <ClInclude Include="ShapeStore.h" />
+    <ClInclude Include="UtilTypes.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="RenderAction.h" />
     <ClInclude Include="RenderCommand.h" />
     <ClInclude Include="RenderMode.h" />

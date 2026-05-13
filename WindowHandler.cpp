@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "LineRenderAction.h"
 #include "CircleRenderAction.h"
+#include "EllipseRenderAction.h"
 #include "ShapeStore.h"
 
 WindowHandler* WindowHandler::instance = nullptr;
@@ -80,6 +81,8 @@ LRESULT WINAPI WindowHandler::WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM l
                 break;
             case RenderMode::DrawCircle:
                 handler->currentAction = new CircleRenderAction(command.value());
+            case RenderMode::DrawEllipse:
+				handler->currentAction = new EllipseRenderAction(command.value());
                 break;
             default:
                 break;

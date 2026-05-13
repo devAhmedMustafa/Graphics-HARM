@@ -92,6 +92,26 @@ void ConsoleMenu::EllipseMenu() {
 		<< "2) Polar\n"
 		<< "3) Midpoint\n"
 		;
+
+	int action;
+	std::cin >> action;
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+	switch (action)
+	{
+	case 1:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawEllipse, "Algo:Direct"));
+		break;
+	case 2:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawEllipse, "Algo:Polar"));
+		break;
+	case 3:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawEllipse, "Algo:Midpoint"));
+		break;
+	default:
+		std::cout << "Not implemented yet\n";
+		break;
+	}
 }
 
 void ConsoleMenu::CurvesMenu() {

@@ -13,7 +13,15 @@ public:
 		DirectEllipse(hdc, xc, yc, rx, ry, color);
 	}
 
-private:
+	std::string serialize() const override {
+		return std::to_string(color) + "," + std::to_string(xc) + "," + std::to_string(yc) + "," +
+			std::to_string(rx) + "," + std::to_string(ry);
+	}
+
+	std::string getShapeType() const override {
+		return "DirectEllipse";
+	}
+
 	int xc, yc, rx, ry;
 
 };

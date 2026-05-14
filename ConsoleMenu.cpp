@@ -1,4 +1,5 @@
 #include "ConsoleMenu.h"
+#include "ShapeStore.h"
 #include <iostream>
 #include <string>
 #include <limits>
@@ -16,6 +17,38 @@ void ConsoleMenu::FileMenu() {
 		<< "2) Save\n"
 		<< "3) Load\n"
 		;
+
+	int action;
+	std::cin >> action;
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+	switch (action)
+	{
+	case 1:
+		ShapeStore::clearShapes();
+		break;
+
+	case 2: {
+
+		std::cout << "Enter filename to save: ";
+		std::string saveFilename;
+		std::getline(std::cin, saveFilename);
+		ShapeStore::saveShapes(saveFilename);
+		break;	
+	}
+
+	case 3: {
+		std::cout << "Enter filename to load: ";
+		std::string loadFilename;
+		std::getline(std::cin, loadFilename);
+		ShapeStore::loadShapes(loadFilename);
+		break;
+	}
+
+	default:
+		std::cout << "Not implemented yet\n";
+		break;
+	}
 }
 
 void ConsoleMenu::PreferencesMenu() {
@@ -23,6 +56,32 @@ void ConsoleMenu::PreferencesMenu() {
 		<< "2) Change cursor\n"
 		<< "3) Change drawing color\n"
 		;
+
+	int action;
+	std::cin >> action;
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+	switch (action)
+	{
+	case 1:
+		m_Context.pushToChannel(RenderCommand(RenderMode::ChangeBgToWhite));
+		break;
+	case 2:
+		m_Context.pushToChannel(RenderCommand(RenderMode::ChangeCursor));
+		break;
+	case 3:
+	{
+		std::string color;
+		std::cout << "Enter drawing color (e.g., Red Green Blue): ";
+		std::getline(std::cin, color);
+
+		m_Context.pushToChannel(RenderCommand(RenderMode::SetDrawingColor, color));
+		break;
+	}
+	default:
+		std::cout << "Not implemented yet\n";
+		break;
+	}
 }
 
 void ConsoleMenu::LinesMenu() {
@@ -123,19 +182,126 @@ void ConsoleMenu::FillingMenu() {
 		<< "2) Fill circle with circles\n"
 		<< "3) Fill square with hermit curves\n"
 		<< "4) Fill rectangle with bezier curves\n"
-		<< "5) Convext and non-convex filling\n"
+		<< "5) Convex and non-convex filling\n"
 		<< "6) Recursive flood fill\n"
 		<< "7) Non-recursive flood fill\n"
 		;
+
+	int action;
+	std::cin >> action;
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+	switch (action)
+	{
+	case 1: {
+		int quadrant;
+		std::cout << "Select quadrant to fill:\n"
+			<< " 1) Top-Right\n"
+			<< " 2) Top-Left\n"
+			<< " 3) Bottom-Left\n"
+			<< " 4) Bottom-Right\n";
+		std::cin >> quadrant;
+		std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+		m_Context.pushToChannel(RenderCommand(RenderMode::Fill, "Algo:CircleWithLines-" + std::to_string(quadrant)));
+		break;
+	}
+	case 2: {
+		int quadrant;
+		std::cout << "Select quadrant to fill:\n"
+			<< " 1) Top-Right\n"
+			<< " 2) Top-Left\n"
+			<< " 3) Bottom-Left\n"
+			<< " 4) Bottom-Right\n";
+		std::cin >> quadrant;
+		std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+
+		m_Context.pushToChannel(RenderCommand(RenderMode::Fill, "Algo:CircleWithCircles-" + std::to_string(quadrant)));
+		break;
+	}
+	case 3:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Fill, "Algo:HermiteCurves"));
+		break;
+	case 4:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Fill, "Algo:BezierCurves"));
+		break;
+	case 5:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Fill, "Algo:PolygonFilling"));
+		break;
+	case 6:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Fill, "Algo:RecursiveFloodFill"));
+		break;
+	case 7:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Fill, "Algo:NonRecursiveFloodFill"));
+		break;
+	default:
+		std::cout << "Not implemented yet\n";
+		break;
+	}
 }
 
 void ConsoleMenu::ClippingMenu() {
-	std::cout << "1) Clip with a rectangle\n"
-		<< "2) Clip with a square\n"
-		<< "3) Line clipping with Liang-Barsky\n"
-		<< "4) Polygon clipping with Sutherland-Hodgman\n"
-		<< "5) Polygon clipping with Weiler-Atherton\n"
+	std::cout << "Available shapes to clip:\n";
+	
+	auto shapes = ShapeStore::getShapes();
+	if (shapes.empty()) {
+		std::cout << "No shapes available. Please draw a shape first.\n";
+		return;
+	}
+
+	for (size_t i = 0; i < shapes.size(); ++i) {
+		std::cout << " " << (i + 1) << ") Shape " << i << "\n";
+	}
+
+	std::cout << "\nSelect a shape to clip (1-" << shapes.size() << "): ";
+	int shapeChoice;
+	std::cin >> shapeChoice;
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+	if (shapeChoice < 1 || shapeChoice > (int)shapes.size()) {
+		std::cout << "Invalid shape selection.\n";
+		return;
+	}
+
+	std::cout << "\nClipping options:\n"
+		<< "Rectangle Clipping:\n"
+		<< "  1) Rectangle + Point\n"
+		<< "  2) Rectangle + Line\n"
+		<< "  3) Rectangle + Polygon\n"
+		<< "Square Clipping:\n"
+		<< "  4) Square + Point\n"
+		<< "  5) Square + Line\n"
 		;
+
+	int action;
+	std::cin >> action;
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+	// Store shape index in the message (shapeIndex:ClippingType)
+	std::string shapeIndexMsg = std::to_string(shapeChoice - 1) + ":";
+
+	switch (action)
+	{
+	case 1:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Clip, shapeIndexMsg + "RectClip_Point"));
+		break;
+	case 2:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Clip, shapeIndexMsg + "RectClip_Line"));
+		break;
+	case 3:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Clip, shapeIndexMsg + "RectClip_Polygon"));
+		break;
+	case 4:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Clip, shapeIndexMsg + "SquareClip_Point"));
+		break;
+	case 5:
+		m_Context.pushToChannel(RenderCommand(RenderMode::Clip, shapeIndexMsg + "SquareClip_Line"));
+		break;
+	default:
+		std::cout << "Not implemented yet\n";
+		break;
+	}
 }
 
 void ConsoleMenu::run() {

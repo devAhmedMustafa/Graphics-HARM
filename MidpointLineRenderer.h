@@ -13,6 +13,14 @@ public:
 		MidPointLine(hdc, start.x, start.y, end.x, end.y, color);
 	}
 
-private:
+	std::string serialize() const override {
+		return std::to_string(color) + "," + std::to_string(start.x) + "," + std::to_string(start.y) + "," +
+			std::to_string(end.x) + "," + std::to_string(end.y);
+	}
+
+	std::string getShapeType() const override {
+		return "MidpointLine";
+	}
+
 	Point start, end;
 };

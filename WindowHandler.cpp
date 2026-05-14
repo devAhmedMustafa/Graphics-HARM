@@ -5,7 +5,21 @@
 #include "CircleRenderAction.h"
 #include "EllipseRenderAction.h"
 #include "CurveRenderAction.h"
+#include "FillingRenderAction.h"
+#include "ClippingRenderAction.h"
 #include "ShapeStore.h"
+
+#include <sstream>
+
+std::vector<std::string> split(const std::string& str, char delimiter) {
+    std::vector<std::string> tokens;
+    std::string token;
+    std::istringstream tokenStream(str);
+    while (std::getline(tokenStream, token, delimiter)) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
 
 WindowHandler* WindowHandler::instance = nullptr;
 
@@ -75,19 +89,39 @@ LRESULT WINAPI WindowHandler::WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM l
         if (command.has_value()) {
             switch (command->mode)
             {
-            case RenderMode::ClearScreen:
+            case RenderMode::ChangeBgToWhite:
+				SetClassLongPtr(hwnd, GCLP_HBRBACKGROUND, (LONG_PTR)GetStockObject(WHITE_BRUSH));
+				InvalidateRect(hwnd, nullptr, TRUE);
                 break;
+
+            case RenderMode::SetDrawingColor: {
+                // Parse color from command.msg and set it as the current drawing color
+                auto msg = command->msg;
+                auto colors = split(msg, ' ');
+                int r = std::stoi(colors[0]), g = std::stoi(colors[1]), b = std::stoi(colors[2]);
+                COLORREF color = RGB(r, g, b);
+                renderPipeline->setDrawingColor(color);
+                break;
+            }
+
             case RenderMode::DrawLine:
 				handler->currentAction = new LineRenderAction(command.value());
                 break;
             case RenderMode::DrawCircle:
                 handler->currentAction = new CircleRenderAction(command.value());
+                break;
             case RenderMode::DrawEllipse:
 				handler->currentAction = new EllipseRenderAction(command.value());
                 break;
             case RenderMode::DrawCurve:
                 handler->currentAction = new CurveRenderAction(command.value());
 				break;
+            case RenderMode::Fill:
+                handler->currentAction = new FillingRenderAction(command.value());
+                break;
+            case RenderMode::Clip:
+                handler->currentAction = new ClippingRenderAction(command.value());
+                break;
             default:
                 break;
             }

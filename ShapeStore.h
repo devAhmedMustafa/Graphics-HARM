@@ -3,7 +3,9 @@
 #include <vector>
 #include <mutex>
 #include <memory>
+#include <string>
 #include "ShapeRenderer.h"
+#include "WindowHandler.h"
 
 class ShapeStore
 {
@@ -22,6 +24,19 @@ public:
 		}
 		return rawPtrs;
 	}
+
+	static void clearShapes() {
+		std::lock_guard<std::mutex> guard(locker);
+		shapes.clear();
+
+		auto handler = WindowHandler::getInstance();
+		if (handler) {
+			InvalidateRect(handler->getHWND(), nullptr, TRUE);
+		}
+	}
+
+	static void saveShapes(const std::string& filename);
+	static void loadShapes(const std::string& filename);
 
 private:
 	static std::vector<std::unique_ptr<ShapeRenderer>> shapes;

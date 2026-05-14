@@ -72,6 +72,21 @@
     <ClCompile Include="CurveRenderAction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FillingRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FillingRenderAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClipAlgorithms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClippingRenderAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ClippingRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppContext.h">
@@ -172,6 +187,21 @@
     </ClInclude>
     <ClInclude Include="CurveRenderAction.h">
       <Filter>Header Files\RenderActions</Filter>
+    </ClInclude>
+    <ClInclude Include="FillingRenderAction.h">
+      <Filter>Header Files\RenderActions</Filter>
+    </ClInclude>
+    <ClInclude Include="FillingRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ClipAlgorithms.h">
+      <Filter>Header Files\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="ClippingRenderAction.h">
+      <Filter>Header Files\RenderActions</Filter>
+    </ClInclude>
+    <ClInclude Include="ClippingRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

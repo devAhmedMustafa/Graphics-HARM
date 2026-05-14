@@ -127,12 +127,17 @@
   <ItemGroup>
     <ClCompile Include="CircleAlgorithms.cpp" />
     <ClCompile Include="CircleRenderAction.cpp" />
+    <ClCompile Include="ClipAlgorithms.cpp" />
+    <ClCompile Include="ClippingRenderAction.cpp" />
+    <ClCompile Include="ClippingRenderer.cpp" />
     <ClCompile Include="ConsoleMenu.cpp" />
     <ClCompile Include="CurveAlgorithms.cpp" />
     <ClCompile Include="CurveRenderAction.cpp" />
     <ClCompile Include="ElipseAlgorithms.cpp" />
     <ClCompile Include="EllipseRenderAction.cpp" />
     <ClCompile Include="filling.cpp" />
+    <ClCompile Include="FillingRenderAction.cpp" />
+    <ClCompile Include="FillingRenderer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LineAlgorithms.cpp" />
     <ClCompile Include="LineRenderAction.cpp" />
@@ -147,6 +152,9 @@
     <ClInclude Include="CardinalCurveRenderer.h" />
     <ClInclude Include="CircleAlgorithms.h" />
     <ClInclude Include="CircleRenderAction.h" />
+    <ClInclude Include="ClipAlgorithms.h" />
+    <ClInclude Include="ClippingRenderAction.h" />
+    <ClInclude Include="ClippingRenderer.h" />
     <ClInclude Include="ConsoleMenu.h" />
     <ClInclude Include="CurveAlgorithms.h" />
     <ClInclude Include="CurveRenderAction.h" />
@@ -156,6 +164,8 @@
     <ClInclude Include="ElipseAlgorithms.h" />
     <ClInclude Include="EllipseRenderAction.h" />
     <ClInclude Include="filling.h" />
+    <ClInclude Include="FillingRenderAction.h" />
+    <ClInclude Include="FillingRenderer.h" />
     <ClInclude Include="IterPolarCircleRenderer.h" />
     <ClInclude Include="LineAlgorithms.h" />
     <ClInclude Include="LineRenderAction.h" />

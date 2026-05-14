@@ -4,6 +4,7 @@
 #include "LineRenderAction.h"
 #include "CircleRenderAction.h"
 #include "EllipseRenderAction.h"
+#include "CurveRenderAction.h"
 #include "ShapeStore.h"
 
 WindowHandler* WindowHandler::instance = nullptr;
@@ -84,6 +85,9 @@ LRESULT WINAPI WindowHandler::WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM l
             case RenderMode::DrawEllipse:
 				handler->currentAction = new EllipseRenderAction(command.value());
                 break;
+            case RenderMode::DrawCurve:
+                handler->currentAction = new CurveRenderAction(command.value());
+				break;
             default:
                 break;
             }

@@ -16,6 +16,12 @@
     <Filter Include="Header Files\Shapes">
       <UniqueIdentifier>{4ee5be28-0670-4f8a-8adb-ae98620b2694}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Algorithms">
+      <UniqueIdentifier>{486187d6-8902-41cc-b95d-b32ba192d232}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderActions">
+      <UniqueIdentifier>{f7c569ca-7a57-4e69-a932-fd62e7726427}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +51,27 @@
     <ClCompile Include="ShapeStore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ElipseAlgorithms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EllipseRenderAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineAlgorithms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineRenderAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurveAlgorithms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurveRenderAction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppContext.h">
@@ -68,16 +95,10 @@
     <ClInclude Include="RenderAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CircleRenderAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UtilTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CircleAlgorithms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
@@ -91,6 +112,66 @@
     </ClInclude>
     <ClInclude Include="ShapeStore.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MidPointCircleRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="MidpointEllipseRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="MidpointLineRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ModMidCircleRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ParametricLineRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="PolarCircleRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="PolarEllipseRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="DDALineRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectEllipseRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="IterPolarCircleRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleAlgorithms.h">
+      <Filter>Header Files\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="ElipseAlgorithms.h">
+      <Filter>Header Files\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="LineAlgorithms.h">
+      <Filter>Header Files\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleRenderAction.h">
+      <Filter>Header Files\RenderActions</Filter>
+    </ClInclude>
+    <ClInclude Include="EllipseRenderAction.h">
+      <Filter>Header Files\RenderActions</Filter>
+    </ClInclude>
+    <ClInclude Include="LineRenderAction.h">
+      <Filter>Header Files\RenderActions</Filter>
+    </ClInclude>
+    <ClInclude Include="filling.h">
+      <Filter>Header Files\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="CurveAlgorithms.h">
+      <Filter>Header Files\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="CardinalCurveRenderer.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="CurveRenderAction.h">
+      <Filter>Header Files\RenderActions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

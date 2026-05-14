@@ -115,6 +115,7 @@ void ConsoleMenu::EllipseMenu() {
 }
 
 void ConsoleMenu::CurvesMenu() {
+	m_Context.pushToChannel(RenderCommand(RenderMode::DrawCurve));
 }
 
 void ConsoleMenu::FillingMenu() {

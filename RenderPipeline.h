@@ -23,18 +23,6 @@ public:
 		return m_Instance;
 	}
 
-	void holdPipeline(RenderCommand cmdToHold) {
-		heldCommand.emplace(cmdToHold);
-	}
-
-	void releasePipeline() {
-		heldCommand.reset();
-	}
-
-	bool isHeld() const {
-		return heldCommand.has_value();
-	}
-
 	std::optional<RenderCommand> getRenderCommand() const;
 
 	COLORREF getDrawingColor() const {
@@ -48,7 +36,6 @@ public:
 private:
 	static RenderPipeline* m_Instance;
 	AppContext& m_Context;
-	std::optional<RenderCommand> heldCommand;
 
 	COLORREF drawingColor = RGB(200, 0, 0);
 };

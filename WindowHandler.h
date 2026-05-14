@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "RenderPipeline.h"
 #include "RenderAction.h"
+#include "CircleAlgorithms.h"
 
 LRESULT WINAPI WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM lp)
 {
@@ -20,6 +21,11 @@ LRESULT WINAPI WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM lp)
     auto renderPipeline = RenderPipeline::getInstance();
 
     auto command = renderPipeline->getRenderCommand();
+    HDC hdc = GetDC(hwnd);
+
+   DirectCircle(hdc, 300, 300, 100, RGB(255,0,0));
+
+ReleaseDC(hwnd, hdc);
     if (!command.has_value())
         return DefWindowProc(hwnd, mcode, wp, lp);
 

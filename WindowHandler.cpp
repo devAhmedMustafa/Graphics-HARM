@@ -7,6 +7,8 @@
 #include "CurveRenderAction.h"
 #include "FillingRenderAction.h"
 #include "ClippingRenderAction.h"
+#include "PolygonRenderAction.h"
+#include "PointRenderAction.h"
 #include "ShapeStore.h"
 
 #include <sstream>
@@ -67,6 +69,7 @@ LRESULT WINAPI WindowHandler::WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM l
         auto shapes = ShapeStore::getShapes();
 
         for (auto& shape : shapes) {
+			if (!shape->seen) continue;
             shape->draw(hdc);
         }
 
@@ -115,6 +118,12 @@ LRESULT WINAPI WindowHandler::WndProc(HWND hwnd, UINT mcode, WPARAM wp, LPARAM l
                 break;
             case RenderMode::DrawCurve:
                 handler->currentAction = new CurveRenderAction(command.value());
+				break;
+            case RenderMode::DrawPoint:
+                handler->currentAction = new PointRenderAction(command.value());
+                break;
+            case RenderMode::DrawPolygon:
+                handler->currentAction = new PolygonRenderAction(command.value());
 				break;
             case RenderMode::Fill:
                 handler->currentAction = new FillingRenderAction(command.value());

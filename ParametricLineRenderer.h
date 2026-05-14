@@ -1,13 +1,14 @@
 #pragma once
 
 #include "ShapeRenderer.h"
+#include "Line.h"
 #include "UtilTypes.h"
 #include "LineAlgorithms.h"
 
-class ParametricLineRenderer : public ShapeRenderer {
+class ParametricLineRenderer : public ShapeRenderer, public Line {
 
 public:
-	ParametricLineRenderer(Point start, Point end, COLORREF color) : start(start), end(end), ShapeRenderer(color) {}
+	ParametricLineRenderer(Point start, Point end, COLORREF color) : ShapeRenderer(color), Line(start, end) {}
 
 	void draw(HDC hdc) override {
 		ParametricLine(hdc, start.x, start.y, end.x, end.y, color);
@@ -21,6 +22,4 @@ public:
 	std::string getShapeType() const override {
 		return "ParametricLine";
 	}
-
-	Point start, end;
 };

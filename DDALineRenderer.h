@@ -1,13 +1,14 @@
 #pragma once
 
 #include "ShapeRenderer.h"
+#include "Line.h"
 #include "UtilTypes.h"
 #include "LineAlgorithms.h"
 
-class DDALineRenderer : public ShapeRenderer {
+class DDALineRenderer : public ShapeRenderer, public Line {
 
 public:
-	DDALineRenderer(Point start, Point end, COLORREF color) : ShapeRenderer(color), start(start), end(end) {}
+	DDALineRenderer(Point start, Point end, COLORREF color) : ShapeRenderer(color), Line(start, end) {}
 
 	void draw(HDC hdc) override {
 		lineDDA(hdc, start.x, start.y, end.x, end.y, color);
@@ -21,6 +22,4 @@ public:
 	std::string getShapeType() const override {
 		return "DDALine";
 	}
-
-	Point start, end;
 };

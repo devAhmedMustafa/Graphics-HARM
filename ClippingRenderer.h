@@ -19,7 +19,7 @@ public:
 
 	// Constructor for clipping a stored shape (by index) against a clipping region
 	ClippingRenderer(
-		size_t shapeIndexToClip,
+		size_t shapeToClipIndex,
 		const Point& clipStart,
 		const Point& clipEnd,
 		ClippingType type,
@@ -30,7 +30,6 @@ public:
 
 	std::string serialize() const override {
 		return std::to_string(color) + "," +
-			std::to_string(m_shapeIndex) + "," +
 			std::to_string(m_clipStart.x) + "," + std::to_string(m_clipStart.y) + "," +
 			std::to_string(m_clipEnd.x) + "," + std::to_string(m_clipEnd.y) + "," +
 			std::to_string(static_cast<int>(m_clipType));
@@ -40,7 +39,7 @@ public:
 		return "Clipping";
 	}
 
-	size_t m_shapeIndex;
+	size_t shapeToClipIndex;
 	Point m_clipStart;
 	Point m_clipEnd;
 	ClippingType m_clipType;

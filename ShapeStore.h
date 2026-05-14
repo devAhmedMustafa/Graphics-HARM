@@ -16,6 +16,21 @@ public:
 		shapes.push_back(std::move(shape));
 	}
 
+	static void removeShape(size_t index) {
+		std::lock_guard<std::mutex> guard(locker);
+		if (index < shapes.size()) {
+			shapes.erase(shapes.begin() + index);
+		}
+	}
+
+	static void replaceShape(size_t index, std::unique_ptr<ShapeRenderer> newShape)
+	{
+		if (index >= shapes.size()) return;
+		
+		std::lock_guard<std::mutex> guard(locker);
+		shapes[index] = std::move(newShape);
+	}
+
 	static std::vector<ShapeRenderer*> getShapes() {
 		std::lock_guard<std::mutex> guard(locker);
 		std::vector<ShapeRenderer*> rawPtrs;
@@ -23,6 +38,11 @@ public:
 			rawPtrs.push_back(shape.get());
 		}
 		return rawPtrs;
+	}
+
+	static std::unique_ptr<ShapeRenderer> getShape(size_t index) {
+		std::lock_guard<std::mutex> guard(locker);
+		return std::move(shapes.at(index));
 	}
 
 	static void clearShapes() {

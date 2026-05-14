@@ -19,6 +19,7 @@ private:
 	void EllipseMenu();
 	void CurvesMenu();
 	void FillingMenu();
+	void PointsMenu();
 	void ClippingMenu();
 
 };

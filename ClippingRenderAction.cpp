@@ -78,10 +78,13 @@ void ClippingRenderAction::onMouseClick(Input::MouseInput mi)
 		logger << "Clipping region: (" << clipStart.x << "," << clipStart.y << ") to ("
 			   << clipEnd.x << "," << clipEnd.y << ")\n";
 
+		auto oldShape = shapes.at(shapeIndex);
+		oldShape->seen = false;
+
 		// Create and store the clipping renderer
 		std::unique_ptr<ShapeRenderer> clippingShape = 
 			std::make_unique<ClippingRenderer>(shapeIndex, clipStart, clipEnd, clipType, color);
-		
+	
 		ShapeStore::addShape(std::move(clippingShape));
 		InvalidateRect(handler->getHWND(), nullptr, TRUE);
 

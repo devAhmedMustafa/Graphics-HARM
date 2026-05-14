@@ -2,15 +2,18 @@
 #include "ClipAlgorithms.h"
 #include "ShapeStore.h"
 #include "DDALineRenderer.h"
+#include "Line.h"
+#include "PolygonRenderer.h"
+#include "PointRenderer.h"
 
 ClippingRenderer::ClippingRenderer(
-	size_t shapeIndexToClip,
+	size_t shapeToClip,
 	const Point& clipStart,
 	const Point& clipEnd,
 	ClippingType type,
 	COLORREF color
 ) : ShapeRenderer(color),
-	m_shapeIndex(shapeIndexToClip),
+	shapeToClipIndex(shapeToClip),
 	m_clipStart(clipStart),
 	m_clipEnd(clipEnd),
 	m_clipType(type)
@@ -19,14 +22,9 @@ ClippingRenderer::ClippingRenderer(
 
 void ClippingRenderer::draw(HDC hdc)
 {
-	// Get the shape from the store
 	auto shapes = ShapeStore::getShapes();
-	if (m_shapeIndex >= shapes.size()) {
-		// Shape was removed or index is invalid
-		return;
-	}
+	auto shapeToClip = shapes.at(shapeToClipIndex);
 
-	auto shapeToClip = shapes[m_shapeIndex];
 	if (!shapeToClip) return;
 
 	// Define clipping region bounds
@@ -40,43 +38,60 @@ void ClippingRenderer::draw(HDC hdc)
 
 	switch (m_clipType)
 	{
-	case ClippingType::RectClip_Point:
-		// Point clipping against rectangle
-		// For a point, we just draw the clipping border
-		ClipPointAsRect(hdc, m_clipStart.x, m_clipStart.y, bx1, by1, bx2, by2, color, true);
+	case ClippingType::RectClip_Point: {
+		auto shapePoint = dynamic_cast<PointRenderer*>(shapeToClip);
+		ClipPointAsRect(hdc, shapePoint->point.x, shapePoint->point.y, bx1, by1, bx2, by2, shapeToClip->color, true);
 		break;
-
+	}
 	case ClippingType::RectClip_Line:
 	{
-
-		auto shapeLine = dynamic_cast<DDALineRenderer*>(shapeToClip);
+	
+		auto shapeLine = dynamic_cast<Line*>(shapeToClip);
 		ClipLineAsRect(hdc, shapeLine->start.x, shapeLine->start.y, shapeLine->end.x, shapeLine->end.y,
-			bx1, by1, bx2, by2, color, true);
+			bx1, by1, bx2, by2, shapeToClip->color, true);
+			
 		break;
 	}
 
 	case ClippingType::RectClip_Polygon:
-		// Polygon clipping against rectangle - Sutherland-Hodgman would be used here
-		// For now, draw the clipping border
-		DrawClipBorder(hdc, bx1, by1, bx2, by2, RGB(180, 0, 0));
-		shapeToClip->draw(hdc);
+	{
+		auto shapePoly = dynamic_cast<PolygonRenderer*>(shapeToClip);
+		if (shapePoly) {
+			int n = static_cast<int>(shapePoly->points.size());
+			if (n >= 2) {
+				std::vector<int> xs(n);
+				std::vector<int> ys(n);
+				for (int i = 0; i < n; ++i) {
+					xs[i] = shapePoly->points[i].x;
+					ys[i] = shapePoly->points[i].y;
+				}
+				ClipPolygonAsRect(hdc, xs.data(), ys.data(), n,
+					bx1, by1, bx2, by2,
+					shapeToClip->color, true);
+			}
+		}
+		else {
+			DrawClipBorder(hdc, bx1, by1, bx2, by2, RGB(180, 0, 0));
+			shapeToClip->draw(hdc);
+		}
 		break;
+	}
 
 	case ClippingType::SquareClip_Point:
 	{
-		// Point clipping against square
 		int side = std::abs(m_clipEnd.x - m_clipStart.x);
-		ClipPointAsSquare(hdc, m_clipStart.x, m_clipStart.y, m_clipStart.x, m_clipStart.y, 
-						  side, color, true);
+		auto shapePoint = dynamic_cast<PointRenderer*>(shapeToClip);
+		ClipPointAsSquare(hdc, shapePoint->point.x, shapePoint->point.y, m_clipStart.x, m_clipStart.y,
+						  side, shapeToClip->color, true);
 		break;
 	}
 
 	case ClippingType::SquareClip_Line:
 	{
-		// Line clipping against square
 		int side = std::abs(m_clipEnd.x - m_clipStart.x);
-		ClipLineAsSquare(hdc, m_clipStart.x, m_clipStart.y, m_clipEnd.x, m_clipEnd.y,
-						 m_clipStart.x, m_clipStart.y, side, color, true);
+		auto shapeLine = dynamic_cast<Line*>(shapeToClip);
+		ClipLineAsSquare(hdc, shapeLine->start.x, shapeLine->start.y, shapeLine->end.x, shapeLine->end.y,
+						 m_clipStart.x, m_clipStart.y, side, shapeToClip->color, true);
 		break;
 	}
 	}

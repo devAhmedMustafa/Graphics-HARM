@@ -10,6 +10,8 @@ enum class RenderMode {
 	DrawCircle,
 	DrawEllipse,
 	DrawCurve,
+	DrawPoint,
+	DrawPolygon,
 	Fill,
 	Clip
 

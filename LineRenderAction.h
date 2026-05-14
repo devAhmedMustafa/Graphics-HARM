@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include "RenderAction.h"
 
 class LineRenderAction : public RenderAction

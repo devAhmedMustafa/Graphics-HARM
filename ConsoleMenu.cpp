@@ -88,6 +88,7 @@ void ConsoleMenu::LinesMenu() {
 	std::cout << "1) DDA\n"
 		<< "2) Midpoint\n"
 		<< "3) Parametric\n"
+		<< "4) Polygon\n"
 		;
 
 	int action;
@@ -105,6 +106,16 @@ void ConsoleMenu::LinesMenu() {
 	case 3:
 		m_Context.pushToChannel(RenderCommand(RenderMode::DrawLine, "Algo:Parametric"));
 		break;
+	case 4:
+	{
+		std::cout << "Enter number of vertices for the polygon: ";
+		int numVertices;
+		std::cin >> numVertices;
+		std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawPolygon, std::to_string(numVertices)));
+		break;
+	}
 	default:
 		std::cout << "Not implemented yet\n";
 		break;
@@ -241,6 +252,25 @@ void ConsoleMenu::FillingMenu() {
 	}
 }
 
+void ConsoleMenu::PointsMenu() {
+	std::cout << "1) Draw point\n";
+
+	int action;
+	std::cin >> action;
+	std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+	switch (action)
+	{
+	case 1:
+		m_Context.pushToChannel(RenderCommand(RenderMode::DrawPoint));
+		break;
+	default:
+		std::cout << "Not implemented yet\n";
+		break;
+	}
+}
+
+
 void ConsoleMenu::ClippingMenu() {
 	std::cout << "Available shapes to clip:\n";
 	
@@ -319,7 +349,8 @@ void ConsoleMenu::run() {
 			<< " 5) Ellipse Menu\n"
 			<< " 6) Curves Menu\n"
 			<< " 7) Filling Menu\n"
-			<< " 8) Clipping Menu\n"
+			<< " 8) Points Menu\n"
+			<< " 9) Clipping Menu\n"
 			<< " 0) Exit\n"
 			<< std::endl;
 
@@ -371,6 +402,10 @@ void ConsoleMenu::run() {
 			break;
 
 		case 8:
+			PointsMenu();
+			break;
+
+		case 9:
 			ClippingMenu();
 			break;
 

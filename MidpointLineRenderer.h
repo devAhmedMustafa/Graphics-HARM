@@ -1,13 +1,14 @@
 #pragma once
 
 #include "ShapeRenderer.h"
+#include "Line.h"
 #include "UtilTypes.h"
 #include "LineAlgorithms.h"
 
-class MidpointLineRenderer : public ShapeRenderer {
+class MidpointLineRenderer : public ShapeRenderer, public Line {
 
 public:
-	MidpointLineRenderer(Point start, Point end, COLORREF color) : start(start), end(end), ShapeRenderer(color) {}
+	MidpointLineRenderer(Point start, Point end, COLORREF color) : ShapeRenderer(color), Line(start, end) {}
 
 	void draw(HDC hdc) override {
 		MidPointLine(hdc, start.x, start.y, end.x, end.y, color);
@@ -22,5 +23,4 @@ public:
 		return "MidpointLine";
 	}
 
-	Point start, end;
 };

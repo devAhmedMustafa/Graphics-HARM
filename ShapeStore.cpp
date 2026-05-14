@@ -13,6 +13,8 @@
 #include "FillingRenderer.h"
 #include "ClippingRenderer.h"
 #include "CardinalCurveRenderer.h"
+#include "PolygonRenderer.h"
+#include "PointRenderer.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -119,6 +121,21 @@ static std::unique_ptr<ShapeRenderer> deserializeShape(const std::string& shapeT
 		int rx = std::stoi(tokens[3]);
 		int ry = std::stoi(tokens[4]);
 		return std::make_unique<PolarEllipseRenderer>(center.x, center.y, rx, ry, color);
+	}
+
+	else if (shapeType == "Polygon" && tokens.size() >= 3) {
+		size_t pointCount = std::stoul(tokens[1]);
+		std::vector<Point> points;
+		for (size_t i = 0; i < pointCount; ++i) {
+			int x = std::stoi(tokens[2 + i * 2]);
+			int y = std::stoi(tokens[3 + i * 2]);
+			points.push_back({ x, y });
+		}
+		return std::make_unique<PolygonRenderer>(points, color);
+	}
+	else if (shapeType == "Point" && tokens.size() >= 3) {
+		Point point = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
+		return std::make_unique<PointRenderer>(point, color);
 	}
 
 	return nullptr;

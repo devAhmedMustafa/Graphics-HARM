@@ -2,6 +2,8 @@
 #include <cmath>
 #include <algorithm>
 
+#include "UtilTypes.h"
+
 // Helper to draw clipping region border
 void DrawClipBorder(HDC hdc, int bx1, int by1, int bx2, int by2, COLORREF col)
 {
@@ -16,7 +18,6 @@ void DrawClipBorder(HDC hdc, int bx1, int by1, int bx2, int by2, COLORREF col)
     DeleteObject(pen);
 }
 
-// Cohen-Sutherland region code calculation
 int CS::regionCode(int x, int y, int bx1, int by1, int bx2, int by2)
 {
     int code = INSIDE;
@@ -40,7 +41,6 @@ void ClipPointAsRect(HDC hdc,
         SetPixel(hdc, x, y, col);
 }
 
-// Line clipping against rectangle (Cohen-Sutherland algorithm)
 void ClipLineAsRect(HDC hdc,
     int x1, int y1, int x2, int y2,
     int bx1, int by1, int bx2, int by2,
@@ -111,16 +111,15 @@ void ClipLineAsRect(HDC hdc,
     }
 }
 
-// Helper for Sutherland-Hodgman polygon clipping
-static std::vector<POINT> _SHClipEdge(
-    const std::vector<POINT>& poly,
+static std::vector<Point> _SHClipEdge(
+    const std::vector<Point>& poly,
     int edgeType, int bx1, int by1, int bx2, int by2)
 {
-    std::vector<POINT> out;
+    std::vector<Point> out;
     int n = (int)poly.size();
     if (n == 0) return out;
 
-    auto inside = [&](POINT p) -> bool {
+    auto inside = [&](Point p) -> bool {
         switch (edgeType) {
         case 0: return p.x >= bx1;   // left
         case 1: return p.x <= bx2;   // right
@@ -130,8 +129,7 @@ static std::vector<POINT> _SHClipEdge(
         return false;
         };
 
-    // Parametric intersection of segment AB with this edge
-    auto intersect = [&](POINT A, POINT B) -> POINT {
+    auto intersect = [&](Point A, Point B) -> Point {
         float dx = (float)(B.x - A.x);
         float dy = (float)(B.y - A.y);
         float t = 0.f;
@@ -146,26 +144,50 @@ static std::vector<POINT> _SHClipEdge(
 
     for (int i = 0; i < n; i++)
     {
-        POINT curr = poly[i];
-        POINT prev = poly[(i - 1 + n) % n];
+        Point curr = poly[i];
+        Point prev = poly[(i - 1 + n) % n];
 
         bool currIn = inside(curr);
         bool prevIn = inside(prev);
 
         if (currIn)
         {
-            if (!prevIn) out.push_back(intersect(prev, curr)); // entering
+            if (!prevIn) out.push_back(intersect(prev, curr));
             out.push_back(curr);
         }
         else if (prevIn)
         {
-            out.push_back(intersect(prev, curr));              // exiting
+            out.push_back(intersect(prev, curr));
         }
     }
     return out;
 }
 
-// Polygon clipping against rectangle (Sutherland-Hodgman algorithm)
+void DrawLineBresenham(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color)
+{
+    int dx = std::abs(x2 - x1);
+    int dy = std::abs(y2 - y1);
+    int sx = (x1 < x2) ? 1 : -1;
+    int sy = (y1 < y2) ? 1 : -1;
+    int err = dx - dy;
+
+    while (true) {
+        SetPixel(hdc, x1, y1, color);
+
+        if (x1 == x2 && y1 == y2) break;
+
+        int e2 = 2 * err;
+        if (e2 > -dy) {
+            err -= dy;
+            x1 += sx;
+        }
+        if (e2 < dx) {
+            err += dx;
+            y1 += sy;
+        }
+    }
+}
+
 void ClipPolygonAsRect(HDC hdc,
     int xs[], int ys[], int n,
     int bx1, int by1, int bx2, int by2,
@@ -175,28 +197,22 @@ void ClipPolygonAsRect(HDC hdc,
     if (drawBorder) DrawClipBorder(hdc, bx1, by1, bx2, by2);
     if (n < 2) return;
 
-    // Build initial polygon
-    std::vector<POINT> poly(n);
+    std::vector<Point> poly(n);
     for (int i = 0; i < n; i++) { poly[i] = { xs[i], ys[i] }; }
 
-    // Clip against all four edges in sequence (Sutherland-Hodgman)
     for (int edge = 0; edge < 4 && !poly.empty(); edge++)
         poly = _SHClipEdge(poly, edge, bx1, by1, bx2, by2);
 
     if (poly.size() < 2) return;
 
-    // Draw the clipped polygon (closed outline)
-    std::vector<POINT> pts(poly.begin(), poly.end());
-    pts.push_back(pts.front());                 // close it
+    for (size_t i = 0; i < poly.size(); i++) {
+        Point p1 = poly[i];
+        Point p2 = poly[(i + 1) % poly.size()];
 
-    HPEN pen = CreatePen(PS_SOLID, 1, col);
-    HPEN old = (HPEN)SelectObject(hdc, pen);
-    Polyline(hdc, pts.data(), (int)pts.size());
-    SelectObject(hdc, old);
-    DeleteObject(pen);
+        DrawLineBresenham(hdc, p1.x, p1.y, p2.x, p2.y, col);
+    }
 }
 
-// Point clipping against square
 void ClipPointAsSquare(HDC hdc,
     int x, int y,
     int bx1, int by1, int side,
@@ -208,7 +224,6 @@ void ClipPointAsSquare(HDC hdc,
         col, drawBorder);
 }
 
-// Line clipping against square
 void ClipLineAsSquare(HDC hdc,
     int x1, int y1, int x2, int y2,
     int bx1, int by1, int side,
@@ -220,7 +235,6 @@ void ClipLineAsSquare(HDC hdc,
         col, drawBorder);
 }
 
-// Polygon clipping against square
 void ClipPolygonAsSquare(HDC hdc,
     int xs[], int ys[], int n,
     int bx1, int by1, int side,

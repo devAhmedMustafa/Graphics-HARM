@@ -14,6 +14,7 @@ public:
 	virtual std::string serialize() const = 0;
 	virtual std::string getShapeType() const = 0;
 
-protected:
 	COLORREF color;
+
+	bool seen = true;
 };

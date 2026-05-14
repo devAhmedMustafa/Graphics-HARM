@@ -143,6 +143,8 @@
     <ClCompile Include="LineRenderAction.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PointRenderAction.cpp" />
+    <ClCompile Include="PolygonRenderAction.cpp" />
     <ClCompile Include="RenderPipeline.cpp" />
     <ClCompile Include="ShapeStore.cpp" />
     <ClCompile Include="WindowHandler.cpp" />
@@ -167,6 +169,7 @@
     <ClInclude Include="FillingRenderAction.h" />
     <ClInclude Include="FillingRenderer.h" />
     <ClInclude Include="IterPolarCircleRenderer.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="LineAlgorithms.h" />
     <ClInclude Include="LineRenderAction.h" />
     <ClInclude Include="Logger.h" />
@@ -175,8 +178,12 @@
     <ClInclude Include="MidpointLineRenderer.h" />
     <ClInclude Include="ModMidCircleRenderer.h" />
     <ClInclude Include="ParametricLineRenderer.h" />
+    <ClInclude Include="PointRenderAction.h" />
+    <ClInclude Include="PointRenderer.h" />
     <ClInclude Include="PolarCircleRenderer.h" />
     <ClInclude Include="PolarEllipseRenderer.h" />
+    <ClInclude Include="PolygonRenderer.h" />
+    <ClInclude Include="PolygonRenderAction.h" />
     <ClInclude Include="ShapeRenderer.h" />
     <ClInclude Include="ShapeStore.h" />
     <ClInclude Include="UtilTypes.h" />

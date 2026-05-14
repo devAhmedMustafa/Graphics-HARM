@@ -60,7 +60,7 @@ void MidPointLine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF c)
     dx = x2 - x1;
     dy = y2 - y1;
     SetPixel(hdc, x, y, c);
-    d = dx - 2 * dy;
+    d = 2 * dy - dx;
     dd1 = 2 * dx - 2 * dy;
     dd2 = -2 * dy;
 

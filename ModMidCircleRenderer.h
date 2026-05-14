@@ -14,7 +14,7 @@ public:
 	}
 
 	std::string serialize() const override {
-		return std::to_string(color) + "," + std::to_string(center.x) + "," + std::to_string(center.y) + "," +
+		return std::to_string(seen) + "," + std::to_string(color) + "," + std::to_string(center.x) + "," + std::to_string(center.y) + "," +
 			std::to_string(radius);
 	}
 

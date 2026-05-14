@@ -20,7 +20,7 @@ public:
 	}
 
 	std::string serialize() const override {
-		std::string result = std::to_string(color) + "," + std::to_string(points.size());
+		std::string result = std::to_string(seen) + "," + std::to_string(color) + "," + std::to_string(points.size());
 		for (const auto& p : points) {
 			result += "," + std::to_string(p.x) + "," + std::to_string(p.y);
 		}

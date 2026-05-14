@@ -29,7 +29,8 @@ public:
 	void draw(HDC hdc) override;
 
 	std::string serialize() const override {
-		return std::to_string(color) + "," +
+		return std::to_string(seen) + "," + std::to_string(color) + "," +
+			std::to_string(shapeToClipIndex) + "," +
 			std::to_string(m_clipStart.x) + "," + std::to_string(m_clipStart.y) + "," +
 			std::to_string(m_clipEnd.x) + "," + std::to_string(m_clipEnd.y) + "," +
 			std::to_string(static_cast<int>(m_clipType));

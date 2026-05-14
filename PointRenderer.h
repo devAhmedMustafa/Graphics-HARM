@@ -16,7 +16,7 @@ public:
     }
 
     std::string serialize() const override {
-        return std::to_string(color) + "," + std::to_string(point.x) + "," + std::to_string(point.y);
+        return std::to_string(seen) + "," + std::to_string(color) + "," + std::to_string(point.x) + "," + std::to_string(point.y);
     }
 
     std::string getShapeType() const override {

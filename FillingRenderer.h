@@ -37,7 +37,7 @@ public:
 	void draw(HDC hdc) override;
 
 	std::string serialize() const override {
-		std::string data = std::to_string(color) + "," + std::to_string(static_cast<int>(fillingType)) + ",";
+		std::string data = std::to_string(seen) + "," + std::to_string(color) + "," + std::to_string(static_cast<int>(fillingType)) + ",";
 		if (isCircle) {
 			data += std::to_string(center.x) + "," + std::to_string(center.y) + "," + std::to_string(radius);
 		}

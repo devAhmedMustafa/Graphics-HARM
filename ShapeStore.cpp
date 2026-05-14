@@ -57,85 +57,135 @@ static std::unique_ptr<ShapeRenderer> deserializeShape(const std::string& shapeT
 		tokens.push_back(token);
 	}
 
-	// Parse color (always first token after type)
-	COLORREF color = 0;
+	bool seen = true;
 	if (!tokens.empty()) {
-		color = static_cast<COLORREF>(std::stoul(tokens[0]));
+		seen = static_cast<bool>(std::stoul(tokens[0]));
+	}
+
+	COLORREF color = 0;
+	if (tokens.size() >= 2) {
+		color = static_cast<COLORREF>(std::stoul(tokens[1]));
 	}
 
 	// Recreate shape based on type
-	if (shapeType == "DDALine" && tokens.size() >= 5) {
-		Point start = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		Point end = { std::stoi(tokens[3]), std::stoi(tokens[4]) };
-		return std::make_unique<DDALineRenderer>(start, end, color);
+	if (shapeType == "DDALine" && tokens.size() >= 6) {
+		Point start = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		Point end = { std::stoi(tokens[4]), std::stoi(tokens[5]) };
+		auto shape = std::make_unique<DDALineRenderer>(start, end, color);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "MidpointLine" && tokens.size() >= 5) {
-		Point start = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		Point end = { std::stoi(tokens[3]), std::stoi(tokens[4]) };
-		return std::make_unique<MidpointLineRenderer>(start, end, color);
+	else if (shapeType == "MidpointLine" && tokens.size() >= 6) {
+		Point start = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		Point end = { std::stoi(tokens[4]), std::stoi(tokens[5]) };
+		auto shape = std::make_unique<MidpointLineRenderer>(start, end, color);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "ParametricLine" && tokens.size() >= 5) {
-		Point start = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		Point end = { std::stoi(tokens[3]), std::stoi(tokens[4]) };
-		return std::make_unique<ParametricLineRenderer>(start, end, color);
+	else if (shapeType == "ParametricLine" && tokens.size() >= 6) {
+		Point start = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		Point end = { std::stoi(tokens[4]), std::stoi(tokens[5]) };
+		auto shape = std::make_unique<ParametricLineRenderer>(start, end, color);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "DirectCircle" && tokens.size() >= 4) {
-		Point center = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		int radius = std::stoi(tokens[3]);
-		return std::make_unique<DirectCircleRenderer>(center, radius, color);
+	else if (shapeType == "DirectCircle" && tokens.size() >= 5) {
+		Point center = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		int radius = std::stoi(tokens[4]);
+		auto shape = std::make_unique<DirectCircleRenderer>(center, radius, color);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "MidPointCircle" && tokens.size() >= 4) {
-		Point center = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		int radius = std::stoi(tokens[3]);
-		return std::make_unique<MidPointCircleRenderer>(color, center, radius);
+	else if (shapeType == "MidPointCircle" && tokens.size() >= 5) {
+		Point center = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		int radius = std::stoi(tokens[4]);
+		auto shape = std::make_unique<MidPointCircleRenderer>(color, center, radius);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "PolarCircle" && tokens.size() >= 4) {
-		Point center = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		int radius = std::stoi(tokens[3]);
-		return std::make_unique<PolarCircleRenderer>(color, center, radius);
+	else if (shapeType == "PolarCircle" && tokens.size() >= 5) {
+		Point center = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		int radius = std::stoi(tokens[4]);
+		auto shape = std::make_unique<PolarCircleRenderer>(color, center, radius);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "IterPolarCircle" && tokens.size() >= 4) {
-		Point center = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		int radius = std::stoi(tokens[3]);
-		return std::make_unique<IterPolarCircleRenderer>(color, center, radius);
+	else if (shapeType == "IterPolarCircle" && tokens.size() >= 5) {
+		Point center = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		int radius = std::stoi(tokens[4]);
+		auto shape = std::make_unique<IterPolarCircleRenderer>(color, center, radius);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "ModMidCircle" && tokens.size() >= 4) {
-		Point center = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		int radius = std::stoi(tokens[3]);
-		return std::make_unique<ModMidCircleRenderer>(color, center, radius);
+	else if (shapeType == "ModMidCircle" && tokens.size() >= 5) {
+		Point center = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		int radius = std::stoi(tokens[4]);
+		auto shape = std::make_unique<ModMidCircleRenderer>(color, center, radius);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "DirectEllipse" && tokens.size() >= 5) {
-		Point center = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		int rx = std::stoi(tokens[3]);
-		int ry = std::stoi(tokens[4]);
-		return std::make_unique<DirectEllipseRenderer>(center.x, center.y, rx, ry, color);
+	else if (shapeType == "DirectEllipse" && tokens.size() >= 6) {
+		Point center = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		int rx = std::stoi(tokens[4]);
+		int ry = std::stoi(tokens[5]);
+		auto shape = std::make_unique<DirectEllipseRenderer>(center.x, center.y, rx, ry, color);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "MidpointEllipse" && tokens.size() >= 5) {
-		Point center = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		int rx = std::stoi(tokens[3]);
-		int ry = std::stoi(tokens[4]);
-		return std::make_unique<MidpointEllipseRenderer>(center.x, center.y, rx, ry, color);
+	else if (shapeType == "MidpointEllipse" && tokens.size() >= 6) {
+		Point center = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		int rx = std::stoi(tokens[4]);
+		int ry = std::stoi(tokens[5]);
+		auto shape = std::make_unique<MidpointEllipseRenderer>(center.x, center.y, rx, ry, color);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "PolarEllipse" && tokens.size() >= 5) {
-		Point center = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		int rx = std::stoi(tokens[3]);
-		int ry = std::stoi(tokens[4]);
-		return std::make_unique<PolarEllipseRenderer>(center.x, center.y, rx, ry, color);
+	else if (shapeType == "PolarEllipse" && tokens.size() >= 6) {
+		Point center = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		int rx = std::stoi(tokens[4]);
+		int ry = std::stoi(tokens[5]);
+		auto shape = std::make_unique<PolarEllipseRenderer>(center.x, center.y, rx, ry, color);
+		shape->seen = seen;
+		return shape;
 	}
 
-	else if (shapeType == "Polygon" && tokens.size() >= 3) {
-		size_t pointCount = std::stoul(tokens[1]);
+	else if (shapeType == "Polygon" && tokens.size() >= 4) {
+		size_t pointCount = std::stoul(tokens[2]);
 		std::vector<Point> points;
 		for (size_t i = 0; i < pointCount; ++i) {
-			int x = std::stoi(tokens[2 + i * 2]);
-			int y = std::stoi(tokens[3 + i * 2]);
+			int x = std::stoi(tokens[3 + i * 2]);
+			int y = std::stoi(tokens[4 + i * 2]);
 			points.push_back({ x, y });
 		}
-		return std::make_unique<PolygonRenderer>(points, color);
+		auto shape = std::make_unique<PolygonRenderer>(points, color);
+		shape->seen = seen;
+		return shape;
 	}
-	else if (shapeType == "Point" && tokens.size() >= 3) {
-		Point point = { std::stoi(tokens[1]), std::stoi(tokens[2]) };
-		return std::make_unique<PointRenderer>(point, color);
+	else if (shapeType == "Point" && tokens.size() >= 4) {
+		Point point = { std::stoi(tokens[2]), std::stoi(tokens[3]) };
+		auto shape = std::make_unique<PointRenderer>(point, color);
+		shape->seen = seen;
+		return shape;
+	}
+	else if (shapeType == "Clipping" && tokens.size() >= 9) {
+		size_t shapeIndex = std::stoul(tokens[2]);
+		Point clipStart = { std::stoi(tokens[3]), std::stoi(tokens[4]) };
+		Point clipEnd = { std::stoi(tokens[5]), std::stoi(tokens[6]) };
+		ClippingRenderer::ClippingType clipType = static_cast<ClippingRenderer::ClippingType>(std::stoul(tokens[7]));
+		auto shape = std::make_unique<ClippingRenderer>(shapeIndex, clipStart, clipEnd, clipType, color);
+		shape->seen = seen;
+		return shape;
+	}
+	else if (shapeType == "CardinalCurve" && tokens.size() >= 10) {
+		std::vector<Point> controlPoints;
+		for (size_t i = 2; i + 1 < tokens.size(); i += 2) {
+			int x = std::stoi(tokens[i]);
+			int y = std::stoi(tokens[i + 1]);
+			controlPoints.push_back({ x, y });
+		}
+		auto shape = std::make_unique<CardinalCurveRenderer>(color, controlPoints);
+		shape->seen = seen;
+		return shape;
 	}
 
 	return nullptr;
